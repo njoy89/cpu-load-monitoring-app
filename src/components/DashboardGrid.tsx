@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { CurrentCpuLoadPanel } from './CurrentCpuLoadPanel';
-import { CpuLoadWindowPanel } from './CpuLoadWindowPanel';
+import { CurrentCpuLoadPanel } from './panels/CurrentCpuLoadPanel';
+import { CpuLoadWindowPanel } from './panels/CpuLoadWindowPanel';
 
 function DashboardGrid() {
   return (
