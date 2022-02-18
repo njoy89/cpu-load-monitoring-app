@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { CurrentCpuLoadPanel } from './CurrentCpuLoadPanel';
+import { CpuLoadWindowPanel } from './CpuLoadWindowPanel';
 
 function DashboardGrid() {
   return (
@@ -16,6 +17,9 @@ function DashboardGrid() {
         </div>
         <div className="column is-4">
           <CurrentCpuLoadPanel avgType="avg15m" />
+        </div>
+        <div className="column is-full">
+          <CpuLoadWindowPanel />
         </div>
       </div>
     </div>

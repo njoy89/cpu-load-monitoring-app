@@ -1,4 +1,4 @@
-export const FETCH_TIMEOUT = 300;
+export const FETCH_TIMEOUT = 1000;
 
 export const WS_ADDRESS =
   process.env.NODE_ENV === 'production'

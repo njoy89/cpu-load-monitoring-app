@@ -2,7 +2,6 @@
   "name": "cpu-load-monitoring-app",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@redux-devtools/extension": "^3.2.2",
     "@testing-library/jest-dom": "^5.16.2",
@@ -27,7 +26,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "startServer": "nodemon server/server.js",
+    "startServer": "nodemon server/server.mjs",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
