@@ -1,34 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
-import App from './App';
+import { configureStore } from './state/configureStore';
 
-import reportWebVitals from './reportWebVitals';
+import DashboardGrid from './components/DashboardGrid';
 
 import './index.css';
+import { initCommunication } from './backendCommunication/initCommunication';
+
+const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <DashboardGrid />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-reportWebVitals(console.log);
-
-const socket = new WebSocket('ws://localhost:8080', 'protocolOne');
-
-socket.addEventListener('open', (message) => {
-  socket.send(
-    JSON.stringify({
-      type: 'initTimeout',
-      timeout: 1000,
-    })
-  );
-});
-
-socket.addEventListener('message', (message) => {
-  console.log(JSON.parse(message.data));
-});
-
-console.log(process.env.NODE_ENV);
+store.dispatch(initCommunication());

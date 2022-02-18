@@ -17,7 +17,7 @@ webSocketServer.on('connection', (ws) => {
       // no-op
     }
 
-    if (message?.type === 'initTimeout') {
+    if (message?.type === 'init') {
       const timeout = message.timeout;
 
       interval = setInterval(() => {
