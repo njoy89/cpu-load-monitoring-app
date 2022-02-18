@@ -9,6 +9,7 @@ import { T_1_MINUTE } from '../../constants';
 import { TimeRangePicker } from './../utils/TimeRangePicker';
 import { InfoIconWithTooltip } from '../utils/InfoIconWithTooltip';
 import { ActionsMenu } from '../utils/ActionsMenu';
+import { Panel, PanelBody, PanelHeader } from '../utils/Panel';
 
 const addDataSeries = ({
   dataPoints,
@@ -50,18 +51,18 @@ export const CpuLoadWindowPanel: React.FunctionComponent<{}> = () => {
   );
 
   return (
-    <article className="panel is-primary">
-      <p className="panel-heading is-flex is-align-items-center p-2">
+    <Panel>
+      <PanelHeader>
         <div className="is-flex-grow-1">
           <span>The average CPU load change over a 10 minute window </span>
           <InfoIconWithTooltip tooltip="The panel displays the current CPU Load based on  average data." />
         </div>
         <TimeRangePicker value="10m" />
         <ActionsMenu />
-      </p>
-      <div className="panel-block has-text-centered p-4 has-background-white is-justify-content-center">
+      </PanelHeader>
+      <PanelBody>
         <CanvasJSReact.CanvasJSChart options={canvasJsOptions} />
-      </div>
-    </article>
+      </PanelBody>
+    </Panel>
   );
 };
