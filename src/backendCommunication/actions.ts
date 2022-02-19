@@ -1,7 +1,11 @@
-export type OutgoingAction = {
-  type: 'init';
-  timeout: number;
-};
+export type OutgoingAction =
+  | {
+      type: 'init';
+      timeout: number;
+    }
+  | {
+      type: 'stress';
+    };
 
 export type IncomingAction = {
   type: 'avgLoad';

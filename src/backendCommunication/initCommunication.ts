@@ -32,4 +32,12 @@ export const initCommunication: ActionCreator<
         });
     }
   });
+
+  (window as any).increaseCpuLoad = () => {
+    const action: OutgoingAction = {
+      type: 'stress',
+    };
+
+    socket.send(JSON.stringify(action));
+  };
 };
