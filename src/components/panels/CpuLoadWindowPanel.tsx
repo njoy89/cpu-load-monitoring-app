@@ -14,6 +14,7 @@ import {
   ELEVATED_LOAD_THRESHOLD_END,
   HIGH_LOAD_THRESHOLD_BEGIN,
   T_1_MINUTE,
+  WINDOW_DURATION,
 } from '../../constants';
 import { TimeRangePicker } from './../utils/TimeRangePicker';
 import { InfoIconWithTooltip } from '../utils/InfoIconWithTooltip';
@@ -109,7 +110,7 @@ export const CpuLoadWindowPanel: React.FunctionComponent<{}> = () => {
       },
       axisX: {
         valueFormatString: 'hh:mm:ss TT',
-        minimum: Date.now() - 2 * T_1_MINUTE,
+        minimum: Date.now() - WINDOW_DURATION,
       },
       data: [
         addDataSeries({

@@ -1,5 +1,5 @@
-import { ActionCreator } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import type { ActionCreator } from 'redux';
+import type { ThunkAction } from 'redux-thunk';
 
 import { FETCH_TIMEOUT, WS_ADDRESS } from '../constants';
 import type { State } from './../state/state.type';

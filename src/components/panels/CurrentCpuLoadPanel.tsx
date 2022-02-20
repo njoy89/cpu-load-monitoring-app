@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { State } from '../../state/state.type';
+import type { State } from '../../state/state.type';
 import { TimeRangePicker } from '../utils/TimeRangePicker';
 import { InfoIconWithTooltip } from '../utils/InfoIconWithTooltip';
 import { ActionsMenu } from '../utils/ActionsMenu';

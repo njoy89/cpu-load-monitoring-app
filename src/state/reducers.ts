@@ -1,6 +1,10 @@
 import type { Action } from './actions';
-import { State, DataPoint } from './state.type';
-import { T_1_MINUTE } from '../constants';
+import type { State, DataPoint, CpuLoadState } from './state.type';
+import {
+  HIGH_LOAD_THRESHOLD_BEGIN,
+  MIN_DURATION_TO_ALERT,
+  WINDOW_DURATION,
+} from '../constants';
 
 const getInitialState = (): State => ({
   dataPoints: {
@@ -8,6 +12,10 @@ const getInitialState = (): State => ({
     avg5m: [],
     avg15m: [],
   },
+  cpuLoadState: {
+    type: 'CpuLoadStateCalm',
+  },
+  incidents: [],
 });
 
 const addDataPoint = ({
@@ -22,8 +30,57 @@ const addDataPoint = ({
   now: number;
 }): DataPoint[] =>
   dataPoints
-    .filter((dataPoint) => now - dataPoint.t <= 2 * T_1_MINUTE)
+    .filter((dataPoint) => now - dataPoint.t <= WINDOW_DURATION)
     .concat({ t, v: v * 100 });
+
+export const updateCpuLoadState = ({
+  prevState,
+  latestDataPoint,
+}: {
+  prevState: CpuLoadState;
+  latestDataPoint: DataPoint;
+}): CpuLoadState => {
+  switch (prevState.type) {
+    case 'CpuLoadStateCalm':
+      return latestDataPoint.v > HIGH_LOAD_THRESHOLD_BEGIN
+        ? {
+            type: 'CpuLoadStateIncreasingLoad',
+            firstDataPoint: latestDataPoint,
+          }
+        : prevState;
+    case 'CpuLoadStateIncreasingLoad':
+      if (latestDataPoint.v <= HIGH_LOAD_THRESHOLD_BEGIN) {
+        return {
+          type: 'CpuLoadStateCalm',
+        };
+      }
+      return latestDataPoint.t - prevState.firstDataPoint.t >=
+        MIN_DURATION_TO_ALERT
+        ? {
+            type: 'CpuLoadStateHighCpuLoad',
+          }
+        : prevState;
+    case 'CpuLoadStateHighCpuLoad':
+      return latestDataPoint.v > HIGH_LOAD_THRESHOLD_BEGIN
+        ? prevState
+        : {
+            type: 'CpuLoadStateRecovering',
+            firstDataPoint: latestDataPoint,
+          };
+    case 'CpuLoadStateRecovering':
+      if (latestDataPoint.v > HIGH_LOAD_THRESHOLD_BEGIN) {
+        return {
+          type: 'CpuLoadStateHighCpuLoad',
+        };
+      }
+      return latestDataPoint.t - prevState.firstDataPoint.t >=
+        MIN_DURATION_TO_ALERT
+        ? {
+            type: 'CpuLoadStateCalm',
+          }
+        : prevState;
+  }
+};
 
 export const rootReducer = (
   prevState: State | undefined = getInitialState(),
@@ -33,7 +90,7 @@ export const rootReducer = (
     case 'AddDataPoint':
       const now = Date.now();
 
-      return {
+      const newState: State = {
         ...prevState,
         dataPoints: {
           avg1m: addDataPoint({
@@ -55,7 +112,42 @@ export const rootReducer = (
             now,
           }),
         },
+        cpuLoadState: updateCpuLoadState({
+          prevState: prevState.cpuLoadState,
+          latestDataPoint: {
+            t: action.timestamp,
+            v: action.data.loadAvg1m * 100,
+          },
+        }),
       };
+
+      if (
+        prevState?.cpuLoadState.type === 'CpuLoadStateIncreasingLoad' &&
+        newState.cpuLoadState.type === 'CpuLoadStateHighCpuLoad'
+      ) {
+        newState.incidents.push({
+          startedAt: prevState.cpuLoadState.firstDataPoint.t,
+          endedAt: undefined,
+        });
+      }
+
+      if (
+        prevState?.cpuLoadState.type === 'CpuLoadStateRecovering' &&
+        newState.cpuLoadState.type === 'CpuLoadStateCalm'
+      ) {
+        const lastIncident = newState.incidents.pop();
+
+        if (lastIncident === undefined) {
+          throw new Error('There should be at least one incident!');
+        }
+
+        newState.incidents.push({
+          startedAt: lastIncident.startedAt,
+          endedAt: prevState.cpuLoadState.firstDataPoint.t,
+        });
+      }
+
+      return newState;
     default:
       return prevState;
   }
