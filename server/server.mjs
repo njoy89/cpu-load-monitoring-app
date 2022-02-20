@@ -1,8 +1,22 @@
 import * as os from 'os';
+import * as http from 'http';
+import express from 'express';
 import { WebSocketServer } from 'ws';
 import { exec } from 'child_process';
 
-const webSocketServer = new WebSocketServer({ port: 8080 });
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const app = express();
+
+app.use(express.static(join(__dirname, './../build')))
+
+const server = http.createServer(app);
+
+const webSocketServer = new WebSocketServer({ server });
 
 webSocketServer.on('connection', (ws) => {
   console.log('connection established');
@@ -66,4 +80,8 @@ webSocketServer.on('connection', (ws) => {
 
     clearInterval(interval);
   });
+});
+
+server.listen(8080, () => {
+  console.log(`Server started on port ${server.address().port} :)`);
 });
