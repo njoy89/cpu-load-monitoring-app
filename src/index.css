@@ -5,8 +5,8 @@ body {
   height: 100vh;
 }
 
-#root {
-  height: 100%;
+html, #root {
+  min-height: 100%;
 }
 
 .is-fullheight {

@@ -29,10 +29,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 TODO
 
-- Incidents
 - UTs
 - ITs
-- netlify
 - logging
 - README.md
-- responsive

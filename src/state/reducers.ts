@@ -125,7 +125,7 @@ export const rootReducer = (
         prevState?.cpuLoadState.type === 'CpuLoadStateIncreasingLoad' &&
         newState.cpuLoadState.type === 'CpuLoadStateHighCpuLoad'
       ) {
-        newState.incidents.push({
+        newState.incidents = newState.incidents.concat({
           startedAt: prevState.cpuLoadState.firstDataPoint.t,
           endedAt: undefined,
         });
@@ -141,7 +141,7 @@ export const rootReducer = (
           throw new Error('There should be at least one incident!');
         }
 
-        newState.incidents.push({
+        newState.incidents = newState.incidents.concat({
           startedAt: lastIncident.startedAt,
           endedAt: prevState.cpuLoadState.firstDataPoint.t,
         });

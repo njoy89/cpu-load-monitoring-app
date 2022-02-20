@@ -11,12 +11,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+const server = http.createServer(app);
+const webSocketServer = new WebSocketServer({ server });
 
 app.use(express.static(join(__dirname, './../build')))
-
-const server = http.createServer(app);
-
-const webSocketServer = new WebSocketServer({ server });
 
 webSocketServer.on('connection', (ws) => {
   console.log('connection established');

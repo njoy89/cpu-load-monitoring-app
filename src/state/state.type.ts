@@ -27,7 +27,7 @@ export type CpuLoadState =
   | CpuLoadStateHighCpuLoad
   | CpuLoadStateRecovering;
 
-interface Incident {
+export interface Incident {
   startedAt: number;
   endedAt?: number;
 }
