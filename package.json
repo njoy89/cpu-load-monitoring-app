@@ -30,7 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "startServer": "nodemon server/server.mjs",
-    "build": "react-scripts build && mkdir .well-known && mkdir .well-known/pki-validation && echo \"186D0F6787994CA6FBA4E18A79F02BD3FB25939DADB2EE6C193B01DF4B6E80A4 comodoca.com 62119a49ecf5f\" >> .well-known/pki-validation/7CEB49B1ABC7E31117C9521FE134883B.txt",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
