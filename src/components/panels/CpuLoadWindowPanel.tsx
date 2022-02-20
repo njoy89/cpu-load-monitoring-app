@@ -13,7 +13,6 @@ import {
   ELEVATED_LOAD_THRESHOLD_BEGIN,
   ELEVATED_LOAD_THRESHOLD_END,
   HIGH_LOAD_THRESHOLD_BEGIN,
-  T_1_MINUTE,
   WINDOW_DURATION,
 } from '../../constants';
 import { TimeRangePicker } from './../utils/TimeRangePicker';
