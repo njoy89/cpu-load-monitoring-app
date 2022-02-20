@@ -92,9 +92,10 @@ export const Incidents: React.FunctionComponent<{}> = () => {
     []
   );
 
+  const emptyList = incidentRows.length === 0;
   const gridOptions = useMemo(
     (): GridOptions => ({
-      pagination: true,
+      pagination: !emptyList,
       paginationPageSize: 10,
       defaultColDef: {
         resizable: true,
@@ -103,8 +104,9 @@ export const Incidents: React.FunctionComponent<{}> = () => {
       onGridReady({ api }: GridReadyEvent) {
         api.sizeColumnsToFit();
       },
+      overlayNoRowsTemplate: '<span>No incident has been reported</span>',
     }),
-    []
+    [emptyList]
   );
 
   return (
@@ -113,7 +115,7 @@ export const Incidents: React.FunctionComponent<{}> = () => {
         <div className="is-flex-grow-1">
           <span>Incidents </span>
           <InfoIconWithTooltip
-            tooltip={`List the time periods when your CPU was under high average load with respect to 1m averages.`}
+            tooltip={`List down the time periods when your CPU was under high average load with respect to 1m averages.`}
           />
         </div>
         <TimeRangePicker value="7d" />
