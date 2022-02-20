@@ -1,6 +1,6 @@
 export const WS_ADDRESS =
   process.env.NODE_ENV === 'production'
-    ? 'wss://18.216.177.91:8080/'
+    ? 'ws://cpu-load-monitoring-app.com'
     : 'ws://localhost:8080';
 
 const MS_TO_S = 1000;
