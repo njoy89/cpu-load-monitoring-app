@@ -12,6 +12,7 @@ import type { State } from '../../state/state.type';
 
 interface IncidentRow {
   no: number;
+  description: string;
   startedAt: number;
   endedAt?: number;
   duration?: number;
@@ -31,6 +32,7 @@ export const Incidents: React.FunctionComponent<{}> = () => {
       incidents.map((incident, index): IncidentRow => {
         return {
           no: index + 1,
+          description: 'high average CPU load',
           startedAt: incident.startedAt,
           endedAt: incident.endedAt,
           duration:
@@ -46,6 +48,9 @@ export const Incidents: React.FunctionComponent<{}> = () => {
   const columnDefs = useMemo(
     (): ColDef[] => [
       { field: 'no', type: 'numericColumn', maxWidth: 100 },
+      {
+        field: 'description',
+      },
       {
         field: 'startedAt',
         valueFormatter: ({ value }: { value: IncidentRow['startedAt'] }) =>

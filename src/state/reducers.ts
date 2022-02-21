@@ -1,10 +1,11 @@
 import type { Action } from './actions';
-import type { State, DataPoint, CpuLoadState } from './state.type';
+import type { State, DataPoint, CpuLoadState, Incident } from './state.type';
 import {
   HIGH_LOAD_THRESHOLD_BEGIN,
   MIN_DURATION_TO_ALERT,
   WINDOW_DURATION,
 } from '../constants';
+import { getNow } from '../utils/getNow';
 
 const getInitialState = (): State => ({
   dataPoints: {
@@ -82,15 +83,59 @@ export const updateCpuLoadState = ({
   }
 };
 
+export const updateIncidents = ({
+  prevState,
+  newCpuLoadState,
+}: {
+  prevState: State;
+  newCpuLoadState: CpuLoadState;
+}): Incident[] => {
+  if (
+    prevState.cpuLoadState.type === 'CpuLoadStateIncreasingLoad' &&
+    newCpuLoadState.type === 'CpuLoadStateHighCpuLoad'
+  ) {
+    return prevState.incidents.concat({
+      startedAt: prevState.cpuLoadState.firstDataPoint.t,
+      endedAt: undefined,
+    });
+  }
+
+  if (
+    prevState.cpuLoadState.type === 'CpuLoadStateRecovering' &&
+    newCpuLoadState.type === 'CpuLoadStateCalm'
+  ) {
+    const newIncidents = prevState.incidents.slice();
+    const lastIncident = newIncidents.pop();
+
+    if (lastIncident === undefined) {
+      throw new Error('There should be at least one incident!');
+    }
+
+    return newIncidents.concat({
+      startedAt: lastIncident.startedAt,
+      endedAt: prevState.cpuLoadState.firstDataPoint.t,
+    });
+  }
+
+  return prevState.incidents;
+};
+
 export const rootReducer = (
   prevState: State | undefined = getInitialState(),
   action: Action
 ): State => {
   switch (action.type) {
     case 'AddDataPoint':
-      const now = Date.now();
+      const now = getNow();
+      const newCpuLoadState = updateCpuLoadState({
+        prevState: prevState.cpuLoadState,
+        latestDataPoint: {
+          t: action.timestamp,
+          v: action.data.loadAvg1m * 100,
+        },
+      });
 
-      const newState: State = {
+      return {
         ...prevState,
         dataPoints: {
           avg1m: addDataPoint({
@@ -112,42 +157,12 @@ export const rootReducer = (
             now,
           }),
         },
-        cpuLoadState: updateCpuLoadState({
-          prevState: prevState.cpuLoadState,
-          latestDataPoint: {
-            t: action.timestamp,
-            v: action.data.loadAvg1m * 100,
-          },
+        cpuLoadState: newCpuLoadState,
+        incidents: updateIncidents({
+          prevState,
+          newCpuLoadState,
         }),
       };
-
-      if (
-        prevState?.cpuLoadState.type === 'CpuLoadStateIncreasingLoad' &&
-        newState.cpuLoadState.type === 'CpuLoadStateHighCpuLoad'
-      ) {
-        newState.incidents = newState.incidents.concat({
-          startedAt: prevState.cpuLoadState.firstDataPoint.t,
-          endedAt: undefined,
-        });
-      }
-
-      if (
-        prevState?.cpuLoadState.type === 'CpuLoadStateRecovering' &&
-        newState.cpuLoadState.type === 'CpuLoadStateCalm'
-      ) {
-        const lastIncident = newState.incidents.pop();
-
-        if (lastIncident === undefined) {
-          throw new Error('There should be at least one incident!');
-        }
-
-        newState.incidents = newState.incidents.concat({
-          startedAt: lastIncident.startedAt,
-          endedAt: prevState.cpuLoadState.firstDataPoint.t,
-        });
-      }
-
-      return newState;
     default:
       return prevState;
   }

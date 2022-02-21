@@ -19,6 +19,7 @@ import { TimeRangePicker } from './../utils/TimeRangePicker';
 import { InfoIconWithTooltip } from '../utils/InfoIconWithTooltip';
 import { ActionsMenu } from '../utils/ActionsMenu';
 import { Panel, PanelBody, PanelHeader } from '../utils/Panel';
+import { getNow } from '../../utils/getNow';
 
 interface TooltipProps {
   dataPoint: CanvasJS.ChartDataPoint;
@@ -109,7 +110,7 @@ export const CpuLoadWindowPanel: React.FunctionComponent<{}> = () => {
       },
       axisX: {
         valueFormatString: 'hh:mm:ss TT',
-        minimum: Date.now() - WINDOW_DURATION,
+        minimum: getNow() - WINDOW_DURATION,
       },
       data: [
         addDataSeries({
