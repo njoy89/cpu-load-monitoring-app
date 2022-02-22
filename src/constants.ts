@@ -1,6 +1,6 @@
 export const WS_ADDRESS =
   process.env.NODE_ENV === 'production'
-    ? 'ws://cpu-load-monitoring.com/ws'
+    ? 'wss://cpu-load-monitoring.com/ws'
     : 'ws://localhost:8080';
 
 const MS_TO_S = 1000;
@@ -9,12 +9,10 @@ export const T_1_MINUTE = MS_TO_S * 60;
 // Product requirement:
 // - The front-end application should retrieve CPU load information every 10 seconds
 export const FETCH_TIMEOUT = 10 * MS_TO_S;
-// TODO
 
 // - A CPU is considered under high average load when it has exceeded 1 for 2 minutes or more.
 // - A CPU is considered recovered from high average load when it drops below 1 for 2 minutes or more.
 export const MIN_DURATION_TO_ALERT = 2 * T_1_MINUTE;
-// TODO
 
 // Product requirement:
 // - The front-end application should maintain a 10 minutes window of historical CPU load information.
