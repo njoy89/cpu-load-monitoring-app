@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as os from 'os';
 import * as http from 'http';
 import express from 'express';
@@ -11,10 +12,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const server = http.createServer(app);
+
+const serverOptions =
+  process.env.NODE_ENV === 'production'
+    ? {
+        key: fs.readFileSync(join(__dirname, './cert/privatekey.pem')),
+        cert: fs.readFileSync(join(__dirname, './cert/certificate.pem')),
+      }
+    : {};
+
+const server = http.createServer(serverOptions, app);
 const webSocketServer = new WebSocketServer({ server });
 
-app.use(express.static(join(__dirname, './../build')))
+app.use(express.static(join(__dirname, './../build')));
 
 const intervalCallback = (ws) => {
   const cpus = os.cpus().length;
@@ -55,25 +65,25 @@ webSocketServer.on('connection', (ws) => {
 
         intervalCallback(ws);
 
-        interval = setInterval(
-          intervalCallback.bind(null, ws),
-          timeout
-        );
+        interval = setInterval(intervalCallback.bind(null, ws), timeout);
 
         break;
       }
       case 'stress': {
-        exec('stress --cpu 16 --io 8 --vm 4 --vm-bytes 256M --timeout 10s', (error, stdout, stderr) => {
-          if (error) {
-            console.log(`error: ${error.message}`);
-            return;
+        exec(
+          'stress --cpu 16 --io 8 --vm 4 --vm-bytes 256M --timeout 10s',
+          (error, stdout, stderr) => {
+            if (error) {
+              console.log(`error: ${error.message}`);
+              return;
+            }
+            if (stderr) {
+              console.log(`stderr: ${stderr}`);
+              return;
+            }
+            console.log(`stdout: ${stdout}`);
           }
-          if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-          }
-          console.log(`stdout: ${stdout}`);
-        });
+        );
 
         break;
       }
