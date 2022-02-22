@@ -17,6 +17,7 @@ const getToastConfig = ({
   animate: { in: 'fadeIn', out: 'fadeOut' },
   duration: 5000,
   dismissible: true,
+  appendTo: document.getElementById('toast-wrapper'),
 });
 
 export const Notification: React.FunctionComponent<{}> = () => {
@@ -52,7 +53,10 @@ export const Notification: React.FunctionComponent<{}> = () => {
   return ['CpuLoadStateHighCpuLoad', 'CpuLoadStateRecovering'].includes(
     cpuLoadState.type
   ) ? (
-    <div className="notification is-danger has-text-centered">
+    <div
+      className="notification is-danger has-text-centered"
+      data-test="top-notification"
+    >
       <i className="fa-solid fa-xl fa-circle-exclamation"></i>{' '}
       <strong className="is-size-5">
         Your CPU is under high average load!

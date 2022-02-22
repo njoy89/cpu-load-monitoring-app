@@ -1,4 +1,4 @@
-interface AddDataPoint {
+export interface AddDataPoint {
   type: 'AddDataPoint';
   data: {
     loadAvg1m: number;

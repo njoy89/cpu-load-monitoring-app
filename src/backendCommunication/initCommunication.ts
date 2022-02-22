@@ -5,10 +5,16 @@ import { FETCH_TIMEOUT, WS_ADDRESS } from '../constants';
 import type { State } from './../state/state.type';
 import type { Action } from './../state/actions';
 import type { IncomingAction, OutgoingAction } from './actions';
+import { initCypress } from './initCypress';
 
 export const initCommunication: ActionCreator<
   ThunkAction<void, State, undefined, Action>
 > = () => (dispatch) => {
+  if ((window as any).Cypress) {
+    initCypress(dispatch);
+    return;
+  }
+
   const socket = new WebSocket(WS_ADDRESS);
 
   socket.addEventListener('open', (message) => {

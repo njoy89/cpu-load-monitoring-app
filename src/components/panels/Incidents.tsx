@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { useSelector } from 'react-redux';
-import { format, formatDuration, intervalToDuration } from 'date-fns';
+import { formatDuration, intervalToDuration } from 'date-fns';
 import type { GridOptions, ColDef, GridReadyEvent } from 'ag-grid-community';
 
 import { TimeRangePicker } from '../utils/TimeRangePicker';
@@ -9,6 +9,7 @@ import { InfoIconWithTooltip } from '../utils/InfoIconWithTooltip';
 import { ActionsMenu } from '../utils/ActionsMenu';
 import { Panel, PanelBody, PanelHeader } from '../utils/Panel';
 import type { State } from '../../state/state.type';
+import { formatDate } from '../../utils/formatDate';
 
 interface IncidentRow {
   no: number;
@@ -18,9 +19,6 @@ interface IncidentRow {
   duration?: number;
   status: 'ongoing' | 'resolved';
 }
-
-const formatDate = (timestamp: number): string =>
-  format(new Date(timestamp), 'yyyy/MM/dd HH:mm:ss.SSS a');
 
 const DASH = '—';
 
@@ -97,10 +95,9 @@ export const Incidents: React.FunctionComponent<{}> = () => {
     []
   );
 
-  const emptyList = incidentRows.length === 0;
   const gridOptions = useMemo(
     (): GridOptions => ({
-      pagination: !emptyList,
+      pagination: true,
       paginationPageSize: 10,
       defaultColDef: {
         resizable: true,
@@ -111,7 +108,7 @@ export const Incidents: React.FunctionComponent<{}> = () => {
       },
       overlayNoRowsTemplate: '<span>No incident has been reported</span>',
     }),
-    [emptyList]
+    []
   );
 
   return (
@@ -127,12 +124,16 @@ export const Incidents: React.FunctionComponent<{}> = () => {
         <ActionsMenu />
       </PanelHeader>
       <PanelBody>
-        <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
+        <div
+          id="incidents-table"
+          className="ag-theme-alpine"
+          style={{ height: 400, width: '100%' }}
+        >
           <AgGridReact
             rowData={incidentRows}
             columnDefs={columnDefs}
             gridOptions={gridOptions}
-          ></AgGridReact>
+          />
         </div>
       </PanelBody>
     </Panel>

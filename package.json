@@ -14,6 +14,7 @@
     "@types/react-dom": "^17.0.11",
     "ag-grid-community": "^27.0.1",
     "ag-grid-react": "^27.0.1",
+    "concurrently": "^7.0.0",
     "date-fns": "^2.28.0",
     "express": "^4.17.3",
     "husky": "^7.0.4",
@@ -32,9 +33,11 @@
     "start": "react-scripts start",
     "startServer": "nodemon server/server.mjs",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test:ut": "react-scripts test",
     "eject": "react-scripts eject",
-    "eslint": "npx eslint src/** server/**"
+    "eslint": "npx eslint src/** server/**",
+    "test:it:dev": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress open\"",
+    "test:it": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress run\""
   },
   "eslintConfig": {
     "extends": [
@@ -68,6 +71,8 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^9.5.0",
+    "cypress-ag-grid": "^1.2.0",
     "nodemon": "^2.0.15"
   }
 }

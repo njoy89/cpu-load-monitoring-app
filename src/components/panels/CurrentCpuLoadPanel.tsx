@@ -61,7 +61,10 @@ export const CurrentCpuLoadPanel: React.FunctionComponent<
         <TimeRangePicker value={timeRange} />
         <ActionsMenu />
       </PanelHeader>
-      <PanelBody className={backgroundClass}>
+      <PanelBody
+        className={backgroundClass}
+        dataTest={`current-cpu-load-${timeRange}`}
+      >
         <div className="is-size-1">{formattedValue}</div>
         <div className="is-size-3 m-2"> %</div>
       </PanelBody>

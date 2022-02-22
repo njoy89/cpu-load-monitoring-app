@@ -8,9 +8,10 @@ import DashboardGrid from './components/DashboardGrid';
 
 import { initCommunication } from './backendCommunication/initCommunication';
 
-import './index.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+
+import './index.css';
 
 const store = configureStore();
 
