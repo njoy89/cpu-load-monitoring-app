@@ -1,27 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="theme-color" content="#000000"/>
+  <head>
+    <script
+      src="https://rum.sumologic.com/sumologic-rum.js"
+      type="text/javascript"
+    ></script>
+    <script>
+      window.sumoLogicOpenTelemetryRum &&
+        window.sumoLogicOpenTelemetryRum.initialize({
+          collectionSourceUrl:
+            'https://stag-rum-events.sumologic.net/receiver/v1/trace/ZaVnC4dhaV1tp_x2Du3NGaJdxJXvxRmbqmHyuqF214THFSKCuiiXOASjqSiVNOhzlRyKkFb2vJqyDM52lDaETnn2bPmSZRBeIIGnkIYFg5DqABOIifNB_g==',
+          serviceName: 'Cpu Load Monitoring',
+          applicationName: 'Cpu Load Monitoring application',
+          samplingProbability: 1,
+        });
+    </script>
+
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
 
     <title>CPU Load Monitoring App</title>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-tooltip@1.0.2/dist/bulma-tooltip.min.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-tooltip@1.0.2/dist/bulma-tooltip.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
     />
 
     <script src="https://cdn.jsdelivr.net/npm/bulma-toast@2.4.1/dist/bulma-toast.min.js"></script>
-    <script src="https://kit.fontawesome.com/b77ddce37a.js" crossorigin="anonymous"></script>
-</head>
-<body>
-<noscript>You need to enable JavaScript to run this app.</noscript>
-<div id="root"></div>
-<div id="toast-wrapper"></div>
-</body>
+    <script
+      src="https://kit.fontawesome.com/b77ddce37a.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <div id="toast-wrapper"></div>
+  </body>
 </html>
