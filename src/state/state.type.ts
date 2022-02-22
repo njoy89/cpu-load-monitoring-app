@@ -32,6 +32,21 @@ export interface Incident {
   endedAt?: number;
 }
 
+export type ConnectionState =
+  | {
+      type: 'notInitialised';
+    }
+  | {
+      type: 'open';
+    }
+  | {
+      type: 'closed';
+    }
+  | {
+      type: 'error';
+      message: string;
+    };
+
 export interface State {
   dataPoints: {
     avg1m: DataPoint[];
@@ -40,4 +55,5 @@ export interface State {
   };
   cpuLoadState: CpuLoadState;
   incidents: Incident[];
+  connectionState: ConnectionState;
 }

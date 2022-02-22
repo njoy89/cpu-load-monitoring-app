@@ -7,7 +7,7 @@ import { Incidents } from './panels/Incidents';
 
 function DashboardGrid() {
   return (
-    <div className="container is-fluid has-background-link-light is-fullheight is-desktop">
+    <div className="container is-fluid is-desktop">
       <h1 className="title is-1 pt-5">CPU Load Monitoring</h1>
       <Notification />
 

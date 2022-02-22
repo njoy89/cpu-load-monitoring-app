@@ -20,8 +20,21 @@ const getToastConfig = ({
   appendTo: document.getElementById('toast-wrapper'),
 });
 
+const DangerNotification: React.FunctionComponent<{ message: string }> = ({
+  message,
+}) => (
+  <div
+    className="notification is-danger has-text-centered"
+    data-test="top-notification"
+  >
+    <i className="fa-solid fa-xl fa-circle-exclamation" />{' '}
+    <strong className="is-size-5">{message}</strong>
+  </div>
+);
+
 export const Notification: React.FunctionComponent<{}> = () => {
   const cpuLoadState = useSelector((state: State) => state.cpuLoadState);
+  const connectionState = useSelector((state: State) => state.connectionState);
   const prevCpuLoadState = usePrevious(cpuLoadState);
 
   useEffect(() => {
@@ -50,17 +63,16 @@ export const Notification: React.FunctionComponent<{}> = () => {
     }
   }, [cpuLoadState, prevCpuLoadState]);
 
-  return ['CpuLoadStateHighCpuLoad', 'CpuLoadStateRecovering'].includes(
-    cpuLoadState.type
-  ) ? (
-    <div
-      className="notification is-danger has-text-centered"
-      data-test="top-notification"
-    >
-      <i className="fa-solid fa-xl fa-circle-exclamation"></i>{' '}
-      <strong className="is-size-5">
-        Your CPU is under high average load!
-      </strong>
-    </div>
-  ) : null;
+  switch (connectionState.type) {
+    case 'error':
+      return <DangerNotification message={connectionState.message} />;
+    case 'closed':
+      return <DangerNotification message="Connection lost!" />;
+    default:
+      return ['CpuLoadStateHighCpuLoad', 'CpuLoadStateRecovering'].includes(
+        cpuLoadState.type
+      ) ? (
+        <DangerNotification message="Your CPU is under high average load!" />
+      ) : null;
+  }
 };

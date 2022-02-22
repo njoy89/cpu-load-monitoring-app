@@ -39,7 +39,7 @@ Relevant / nice-to-have feature propositions:
  - add an ability to pick a custom time ranges on all panels (that would require B/E support);
  - add more options to customize visual aspects of the panels (background color, text colors, stylize time series etc.);
  - improve alerting feature - browser should trigger browser notifications so that user knows that CPU is under heavy load even if she/he is not on the app's tab;
- - add an ability to customize parameters / thresholds such as 10 seconds (data points fetching frequency) or 2 minutes (duration used in alerting logic);
+ - add an ability to customize parameters / thresholds such as 10 seconds (data points fetching frequency) or 2 minutes (duration used in alerting logic) or 0 % - 60 % - 100 % (low/medium/high CPU load thresholds);
 
 ## Tech stack:
 
@@ -49,7 +49,7 @@ Front-end:
  - `cypress` for integration tests,
  - `jest` for unit tests,
  - `create-react-app` as a tool for generating a project scaffolding,
- - `WebSocket` as a communication protocol, which provides with full-duplex communication channel over a single TCP connection between F/E and B/E,
+ - `WebSocket API` as a communication protocol, which provides with full-duplex communication channel over a single TCP connection between F/E and B/E,
  - `canvasJS` for time series visualisation,
  - `ag-grid` for data table visualisation.
 
@@ -64,6 +64,5 @@ DevOps:
  - used `Sumo Logic Real User Monitoring`.
 
 TODO:
- - connection lost
  - pm2 file
  - text panel

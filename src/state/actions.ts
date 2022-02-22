@@ -1,3 +1,5 @@
+import { ConnectionState } from './state.type';
+
 export interface AddDataPoint {
   type: 'AddDataPoint';
   data: {
@@ -8,4 +10,9 @@ export interface AddDataPoint {
   timestamp: number;
 }
 
-export type Action = AddDataPoint;
+interface ChangeConnectionState {
+  type: 'ChangeConnectionState';
+  state: ConnectionState;
+}
+
+export type Action = AddDataPoint | ChangeConnectionState;

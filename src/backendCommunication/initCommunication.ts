@@ -9,7 +9,7 @@ import { initCypress } from './initCypress';
 
 export const initCommunication: ActionCreator<
   ThunkAction<void, State, undefined, Action>
-> = () => (dispatch) => {
+> = () => (dispatch, getState) => {
   if ((window as any).Cypress) {
     initCypress(dispatch);
     return;
@@ -26,8 +26,29 @@ export const initCommunication: ActionCreator<
     socket.send(JSON.stringify(initTimeoutAction));
   });
 
+  socket.addEventListener('error', function () {
+    dispatch({
+      type: 'ChangeConnectionState',
+      state: {
+        type: 'error',
+        message: 'Browser could not establish a connection with the server',
+      },
+    });
+  });
+
   socket.addEventListener('message', (message) => {
     const action: IncomingAction = JSON.parse(message.data);
+
+    if (getState().connectionState.type === 'notInitialised') {
+      // update the connectionState on receiving the first data points
+
+      dispatch({
+        type: 'ChangeConnectionState',
+        state: {
+          type: 'open',
+        },
+      });
+    }
 
     switch (action.type) {
       case 'avgLoad':
@@ -37,6 +58,15 @@ export const initCommunication: ActionCreator<
           timestamp: action.timestamp,
         });
     }
+  });
+
+  socket.addEventListener('close', () => {
+    dispatch({
+      type: 'ChangeConnectionState',
+      state: {
+        type: 'closed',
+      },
+    });
   });
 
   (window as any).increaseCpuLoad = () => {

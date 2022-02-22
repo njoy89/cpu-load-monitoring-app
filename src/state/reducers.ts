@@ -17,6 +17,9 @@ const getInitialState = (): State => ({
     type: 'CpuLoadStateCalm',
   },
   incidents: [],
+  connectionState: {
+    type: 'notInitialised',
+  },
 });
 
 const addDataPoint = ({
@@ -162,6 +165,11 @@ export const rootReducer = (
           prevState,
           newCpuLoadState,
         }),
+      };
+    case 'ChangeConnectionState':
+      return {
+        ...prevState,
+        connectionState: action.state,
       };
     default:
       return prevState;
