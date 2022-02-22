@@ -4,6 +4,7 @@ import { CurrentCpuLoadPanel } from './panels/CurrentCpuLoadPanel';
 import { CpuLoadWindowPanel } from './panels/CpuLoadWindowPanel';
 import { Notification } from './utils/Notification';
 import { Incidents } from './panels/Incidents';
+import { InstructionsTextPanel } from './panels/InstructionsTextPanel';
 
 function DashboardGrid() {
   return (
@@ -26,6 +27,9 @@ function DashboardGrid() {
         </div>
         <div className="column is-8">
           <Incidents />
+        </div>
+        <div className="column is-4">
+          <InstructionsTextPanel />
         </div>
       </div>
     </div>
