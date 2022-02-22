@@ -16,6 +16,23 @@ const webSocketServer = new WebSocketServer({ server });
 
 app.use(express.static(join(__dirname, './../build')))
 
+const intervalCallback = (ws) => {
+  const cpus = os.cpus().length;
+  const [loadAvg1m, loadAvg5m, loadAvg15m] = os.loadavg();
+
+  ws.send(
+    JSON.stringify({
+      type: 'avgLoad',
+      data: {
+        loadAvg1m: loadAvg1m / cpus,
+        loadAvg5m: loadAvg5m / cpus,
+        loadAvg15m: loadAvg15m / cpus,
+      },
+      timestamp: Date.now(),
+    })
+  );
+};
+
 webSocketServer.on('connection', (ws) => {
   console.log('connection established');
 
@@ -36,22 +53,12 @@ webSocketServer.on('connection', (ws) => {
       case 'init': {
         const timeout = message.timeout;
 
-        interval = setInterval(() => {
-          const cpus = os.cpus().length;
-          const [loadAvg1m, loadAvg5m, loadAvg15m] = os.loadavg();
+        intervalCallback(ws);
 
-          ws.send(
-            JSON.stringify({
-              type: 'avgLoad',
-              data: {
-                loadAvg1m: loadAvg1m / cpus,
-                loadAvg5m: loadAvg5m / cpus,
-                loadAvg15m: loadAvg15m / cpus,
-              },
-              timestamp: Date.now(),
-            })
-          );
-        }, timeout);
+        interval = setInterval(
+          intervalCallback.bind(null, ws),
+          timeout
+        );
 
         break;
       }

@@ -33,11 +33,12 @@
     "start": "react-scripts start",
     "startServer": "nodemon server/server.mjs",
     "build": "react-scripts build",
-    "test:ut": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "npx eslint src/** server/**",
+    "test:ut:watch": "react-scripts test",
+    "test:ut": "CI=true react-scripts test",
     "test:it:dev": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress open\"",
-    "test:it": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress run\""
+    "test:it": "npm run build && concurrently -k \"serve -l 3010 ./build\" \"npx cypress run\""
   },
   "eslintConfig": {
     "extends": [
@@ -73,6 +74,12 @@
   "devDependencies": {
     "cypress": "^9.5.0",
     "cypress-ag-grid": "^1.2.0",
-    "nodemon": "^2.0.15"
-  }
+    "nodemon": "^2.0.15",
+    "pre-commit": "^1.2.2"
+  },
+  "pre-commit": [
+    "eslint",
+    "test:ut",
+    "test:it"
+  ]
 }
