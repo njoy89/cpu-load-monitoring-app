@@ -1,5 +1,7 @@
 # CPU Load Monitoring project
 
+[![Node.js CI](https://github.com/njoy89/cpu-load-monitoring-app/actions/workflows/tests.yml/badge.svg)](https://github.com/njoy89/cpu-load-monitoring-app/actions/workflows/tests.yml)
+
 ## https://cpu-load-monitoring.com/
 
 ## Available Scripts
