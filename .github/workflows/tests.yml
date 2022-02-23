@@ -16,24 +16,25 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [ 14.x ]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build
-    #- run: npm run eslint
-    #- run: npm run test:ut
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - run: npm run eslint
+      - run: npm run test:ut
 
-    - name: Cypress run
-      uses: cypress-io/github-action@v2
-      with:
-        start: npx serve -l 3010 ./build
-        wait-on: http://localhost:3010
-        wait-on-timeout: 120
-        command: npm run test:it
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: npx serve -l 3010 ./build
+          wait-on: http://localhost:3010
+          wait-on-timeout: 120
+          browser: chrome
+          command: npm run test:it
