@@ -38,7 +38,7 @@
     "test:ut:watch": "react-scripts test",
     "test:ut": "CI=true react-scripts test",
     "test:it:dev": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress open\"",
-    "test:it": "npm run build && concurrently -k \"serve -l 3010 ./build\" \"npx cypress run\""
+    "test:it": "npx cypress run"
   },
   "eslintConfig": {
     "extends": [
@@ -77,10 +77,5 @@
     "nodemon": "^2.0.15",
     "pre-commit": "^1.2.2",
     "serve": "^13.0.2"
-  },
-  "pre-commit": [
-    "eslint",
-    "test:ut",
-    "test:it"
-  ]
+  }
 }

@@ -26,6 +26,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run eslint
-    - run: npm run test:ut
-    - run: npm run test:it
+    - run: npm run build
+    #- run: npm run eslint
+    #- run: npm run test:ut
+
+    - name: Cypress run
+      uses: cypress-io/github-action@v2
+      with:
+        start: serve -l 3010 ./build
+        wait-on: http://localhost:3010
+        wait-on-timeout: 120
+        command: npm run test:it
