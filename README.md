@@ -30,19 +30,19 @@ verified by unit tests in the file: `./src/state/reducers.test.ts`.
 Only reducers (including the transitions between state machine's states) are covered by unit tests.
 
 Integration tests mocks the back-end and verify the application from the user perspective. Tests cases are not
-independent from each other - their order describes a certain test scenario.
+independent of each other - their order describes a certain test scenario.
 
 ## Open-ended questions
 
 #### How you would extend or improve your application design if you were building this for production?
 
-Things to improve related specifically to application design:
+Things to improve related specifically to application (UI/UX) design:
 
 - improve layout responsiveness;
 - add an ability to switch to the dark mode;
 - add an ability to switch to the compact mode (smaller font sizes, spacings etc.);
 
-Relevant / nice-to-have feature propositions:
+Nice-to-have feature propositions:
 
 - add an ability to re-arrange the position and size of the panels on Dashboard as user wishes;
 - add an ability to pick a custom time ranges on all panels (that would require B/E support);
