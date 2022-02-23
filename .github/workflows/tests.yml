@@ -33,7 +33,7 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v2
       with:
-        start: serve -l 3010 ./build
+        start: npx serve -l 3010 ./build
         wait-on: http://localhost:3010
         wait-on-timeout: 120
         command: npm run test:it
