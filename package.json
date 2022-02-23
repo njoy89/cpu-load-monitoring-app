@@ -37,8 +37,8 @@
     "eslint": "npx eslint src/** server/**",
     "test:ut:watch": "react-scripts test",
     "test:ut": "CI=true react-scripts test",
-    "test:it:dev": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress open\"",
-    "test:it": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress run\"",
+    "test:it:dev": "npm run build && concurrently -k \"serve -l 3010 ./build\" \"npx cypress open\"",
+    "test:it": "npm run build && concurrently -k \"serve -l 3010 ./build\" \"npx cypress run\"",
     "test:it:ci": "npx cypress run"
   },
   "eslintConfig": {
