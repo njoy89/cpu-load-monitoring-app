@@ -81,5 +81,4 @@ Relevant / nice-to-have feature propositions:
 
 ## TODO:
 
-- pm2 file
 - add logging to the server
