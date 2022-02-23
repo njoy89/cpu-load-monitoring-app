@@ -37,4 +37,4 @@ jobs:
           wait-on: http://localhost:3010
           wait-on-timeout: 120
           browser: chrome
-          command: npm run test:it
+          command: npm run test:it:ci

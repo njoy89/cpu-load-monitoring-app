@@ -38,7 +38,8 @@
     "test:ut:watch": "react-scripts test",
     "test:ut": "CI=true react-scripts test",
     "test:it:dev": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress open\"",
-    "test:it": "npx cypress run"
+    "test:it:dev": "npm run build && concurrently \"serve -l 3010 ./build\" \"npx cypress run\"",
+    "test:it:ci": "npx cypress run"
   },
   "eslintConfig": {
     "extends": [
