@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { init as initApm } from '@elastic/apm-rum';
 
 import { configureStore } from './state/configureStore';
 
@@ -25,3 +26,18 @@ ReactDOM.render(
 );
 
 store.dispatch(initCommunication());
+
+if (!(window as any).Cypress) {
+  initApm({
+    // Set required service name (allowed characters: a-z, A-Z, 0-9, -, _, and space)
+    serviceName: 'Cpu Load Monitoring',
+
+    serverUrl:
+      'https://514ec779bcab43f2b36afd567105afff.apm.us-central1.gcp.cloud.es.io:443',
+
+    serviceVersion: '1.0',
+
+    environment:
+      process.env.NODE_ENV === 'development' ? 'development' : 'production',
+  });
+}
